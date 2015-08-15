@@ -3,6 +3,7 @@ package org.fergoid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 public class MarkTest {
 		 
@@ -66,9 +67,14 @@ public class MarkTest {
 	            persons.add(new Girl("Elaine", 17));
 	 
 	 
-	            List allAges = MarkTest.listAllAges(persons, Person::getAge);
+	            
+	            List 
+	            allAges = MarkTest.listAllAges(persons, Person::getAge, p -> p.getAge() < 18);
 	            System.out.println("Printing out all ages \n"+allAges);
 
+	            allAges = MarkTest.listAllAges(persons, Person::getAge, p -> true);
+	            System.out.println("Printing out all ages \n"+allAges);
+	            
 	            List allNames = MarkTest.listAll(persons, Person::getName);
 	            System.out.println("Printing out all names \n"+allNames);
 	            
@@ -79,9 +85,11 @@ public class MarkTest {
 	    }
 	 
 	 
-	    private static List<Integer> listAllAges(List<Person> person, Function<Person, Integer> f){
+	    private static List<Integer> listAllAges(List<Person> person, Function<Person, Integer> f, Predicate<Person> p){
 	        List<Integer> result = new ArrayList<Integer>();
-	        person.forEach(x -> result.add(f.apply(x)));
+	        person.stream().
+	        	filter(p).
+	        		forEach(x -> result.add(f.apply(x)));
 	        return result;
 	    }
 	    
